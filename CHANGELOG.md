@@ -2,9 +2,10 @@
 
 ### Release 4.4.1 (XX.XX.2020)
 
+* Fixed client crash caused by wrong order of initializing event scheduler. As part of resource creation, there is a possibility that some of the resources can be created as Auto Observable, but that will require that those resources have certain base component like Timer to be created. Timer creation requires that event scheduler must have been created before hand. Since, Resource creation is an independent operation than instantiating Pelion Client, there is a chance that Resource can be created before Client stack is instantiated so it becomes highly dependant on order in which APIs are called. To resolve this issue, scheduler initilization call is also added in M2MBase constructor as fail-safe mechanism, so that order of API calls does not matter for application developer.
 * Fixed the issue of reporting error callback of `MESSAGE_STATUS_SEND_FAILED` when notification sending fails because of network issue and internal CoAP retransmission fails.This is especially helpful for UDP and UDP-QUEUE based client where packets can be lost easily and should be informed to application for their booking purposes.
 However, the notification will still be stored internally in client and it will attempt to re-send it on next successful reconnection to Pelion Cloud.
- 
+
 
 ### Release 4.4.0 (17.04.2020)
 
