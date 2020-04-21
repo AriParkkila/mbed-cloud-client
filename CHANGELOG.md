@@ -1,5 +1,11 @@
 ## Changelog for Pelion Device Management Client
 
+### Release 4.4.1 (XX.XX.2020)
+
+* Fixed the issue of reporting error callback of `MESSAGE_STATUS_SEND_FAILED` when notification sending fails because of network issue and internal CoAP retransmission fails.This is especially helpful for UDP and UDP-QUEUE based client where packets can be lost easily and should be informed to application for their booking purposes.
+However, the notification will still be stored internally in client and it will attempt to re-send it on next successful reconnection to Pelion Cloud.
+ 
+
 ### Release 4.4.0 (17.04.2020)
 
 * Fixed off-by-one bug in `m2mstring::convert_ascii_to_float()`.

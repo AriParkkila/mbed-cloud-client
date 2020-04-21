@@ -855,6 +855,14 @@ uint8_t M2MNsdlInterface::received_from_server_callback(struct nsdl_s *nsdl_hand
                        COAP_STATUS_BUILDER_BLOCK_SENDING_FAILED == coap_header->coap_status) {
 
                 tr_info("M2MNsdlInterface::received_from_server_callback - message sending failed, id %d", coap_header->msg_id);
+                coap_response_s *resp = find_response(coap_header->msg_id);
+                if (resp) {
+                    M2MBase *base = find_resource(resp->uri_path);
+                    if (base) {
+                        base->send_message_delivery_status(*base, M2MBase::MESSAGE_STATUS_SEND_FAILED, resp->type);
+                    }
+                }
+
                 _observer.registration_error(M2MInterface::NetworkError, true);
 
             // Handle Server-side expections during registration flow
